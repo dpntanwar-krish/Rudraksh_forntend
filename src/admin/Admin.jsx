@@ -5,6 +5,7 @@ import File from "./File";
 import Enquiry from "./Admin_Pages/Enquiry";
 import SliderManager from "./SliderManager";
 import SplashScreen from "../components/SplashScreen";
+import NewsManager from "./NewsManager";
 import axios from "axios";
 import { server_url } from "../url/url";
 
@@ -187,6 +188,10 @@ const Admin = ({ onLogout }) => {
         ) : activeView === "banners" ? (
           <section className="admin-section">
             <SliderManager />
+          </section>
+        ) : activeView === "news" ? (
+          <section className="admin-section">
+            <NewsManager />
           </section>
         ) : activeView === "images" ? (
           <section className="admin-section">
