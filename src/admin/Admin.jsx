@@ -1,16 +1,23 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./Admin.css";
 import rudrakshLogo from "/public/image/Rfavicon.png";
 import File from "./File";
 import Enquiry from "./Admin_Pages/Enquiry";
 import SliderManager from "./SliderManager";
 import SplashScreen from "../components/SplashScreen";
+import axios from "axios";
+import { server_url } from "../url/url";
 
 const Admin = ({ onLogout }) => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [activeView, setActiveView] = useState("dashboard");
 	const [isLoading, setIsLoading] = useState(true);
 	const adminEmail = "krishtanwar153@gmail.com";
+	const [stats, setStats] = useState({
+		sliders: 0,
+		photos: 0,
+		enquiries: 0,
+	});
 
 	const navItems = useMemo(
 		() => [
@@ -41,6 +48,32 @@ const Admin = ({ onLogout }) => {
 		videos: "Video Folder Manager",
 		password: "Password Reset",
 	};
+
+	const fetchDashboardStats = async () => {
+		try {
+			const [sliderRes, photoRes, enquiryRes] = await Promise.all([
+				axios.get(server_url + "/Slider/all"),
+				axios.get(server_url + "/File/files"),
+				axios.get(server_url + "/Enquiry/Eall"),
+			]);
+
+			const sliderCount = Array.isArray(sliderRes?.data?.data) ? sliderRes.data.data.length : 0;
+			const photoCount = Array.isArray(photoRes?.data) ? photoRes.data.length : 0;
+			const enquiryCount = Array.isArray(enquiryRes?.data?.data) ? enquiryRes.data.data.length : 0;
+
+			setStats({
+				sliders: sliderCount,
+				photos: photoCount,
+				enquiries: enquiryCount,
+			});
+		} catch (error) {
+			console.error("Dashboard stats fetch failed:", error?.message || error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDashboardStats();
+	}, []);
 
 	return (
 		<>
@@ -129,10 +162,10 @@ const Admin = ({ onLogout }) => {
 				{activeView === "dashboard" ? (
 					<section className="admin-section admin-dashboard">
 						<div className="dashboard-metrics">
-							<article className="dashboard-metric-card"><p>Slider Records</p><h3>0</h3></article>
-							<article className="dashboard-metric-card"><p>Total Photos</p><h3>0</h3></article>
+							<article className="dashboard-metric-card"><p>Slider Records</p><h3>{stats.sliders}</h3></article>
+							<article className="dashboard-metric-card"><p>Total Photos</p><h3>{stats.photos}</h3></article>
 							<article className="dashboard-metric-card"><p>Total Videos</p><h3>0</h3></article>
-							<article className="dashboard-metric-card"><p>Enquiry Queue</p><h3>0</h3></article>
+							<article className="dashboard-metric-card"><p>Enquiry Queue</p><h3>{stats.enquiries}</h3></article>
 							<article className="dashboard-metric-card"><p>News Records</p><h3>0</h3></article>
 						</div>
 

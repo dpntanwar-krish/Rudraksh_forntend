@@ -4,6 +4,7 @@
   border-radius: 12px;
   padding: 1rem;
   color: #fff;
+  width: 100%;
 }
 
 .slider-form {
@@ -19,6 +20,7 @@
 
 .slider-form input,
 .slider-form button {
+  width: 100%;
   border-radius: 8px;
   border: 1px solid #2a2a2a;
   background: #1a1a1a;
@@ -69,6 +71,7 @@
 .slider-card-foot p {
   margin: 0;
   font-size: 0.86rem;
+  word-break: break-word;
 }
 
 .slider-card-foot button {
@@ -78,4 +81,38 @@
   border-radius: 8px;
   padding: 0.3rem 0.5rem;
   cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .slider-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .slider-manager {
+    padding: 0.75rem;
+  }
+
+  .slider-form h2 {
+    font-size: 1rem;
+  }
+
+  .slider-grid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .slider-card img {
+    height: 170px;
+  }
+
+  .slider-card-foot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .slider-card-foot button {
+    width: 100%;
+  }
 }
