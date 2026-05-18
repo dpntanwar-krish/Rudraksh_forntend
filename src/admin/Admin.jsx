@@ -10,6 +10,7 @@ const Admin = ({ onLogout }) => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [activeView, setActiveView] = useState("dashboard");
 	const [isLoading, setIsLoading] = useState(true);
+	const adminEmail = "krishtanwar153@gmail.com";
 
 	const navItems = useMemo(
 		() => [
@@ -84,6 +85,11 @@ const Admin = ({ onLogout }) => {
 					</button>
 				</nav>
 
+				<div className="sidebar-admin-meta">
+					<strong>{adminEmail}</strong>
+					<span>Administrator</span>
+				</div>
+
 				<div className="sidebar-footer">
 					<div className="support-card">
 						<h6>Need Help?</h6>
@@ -114,7 +120,7 @@ const Admin = ({ onLogout }) => {
 					<div className="dashboard-user-chip">
 						<span className="dashboard-avatar">A</span>
 						<div>
-							<strong>krishtanwar153@gmail.com</strong>
+							<strong>{adminEmail}</strong>
 							<p>Administrator</p>
 						</div>
 					</div>
