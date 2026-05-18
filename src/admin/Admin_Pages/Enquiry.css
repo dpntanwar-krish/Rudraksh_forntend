@@ -1,0 +1,94 @@
+.enquiry-manager {
+  background: #111111;
+  border: 1px solid #3a0a0a;
+  border-radius: 12px;
+  padding: 1rem;
+  color: #f5f5f5;
+}
+
+.enquiry-manager-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.enquiry-manager-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.refresh-btn {
+  border: 1px solid #7f1d1d;
+  background: #1a1010;
+  color: #f5f5f5;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.enquiry-status {
+  margin: 0 0 0.75rem;
+  color: #ffb4ab;
+}
+
+.enquiry-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.enquiry-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.enquiry-table th,
+.enquiry-table td {
+  border-bottom: 1px solid #2a2a2a;
+  text-align: left;
+  padding: 0.65rem;
+  vertical-align: top;
+}
+
+.enquiry-table th {
+  color: #ff6f61;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.enquiry-table td {
+  color: #e8e8e8;
+  font-size: 0.9rem;
+}
+
+.message-cell {
+  max-width: 280px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.empty-cell {
+  text-align: center;
+  color: #bdbdbd;
+}
+
+.delete-icon-btn {
+  border: 1px solid #7f1d1d;
+  background: #1a1010;
+  color: #ff8a80;
+  border-radius: 8px;
+  padding: 0.3rem 0.45rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.delete-icon-btn:hover {
+  background: #2a1212;
+}

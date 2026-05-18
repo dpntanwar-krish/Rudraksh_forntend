@@ -1,0 +1,81 @@
+.slider-manager {
+  background: #111;
+  border: 1px solid #3a0a0a;
+  border-radius: 12px;
+  padding: 1rem;
+  color: #fff;
+}
+
+.slider-form {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.slider-form h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.slider-form input,
+.slider-form button {
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 0.6rem 0.7rem;
+}
+
+.slider-form button {
+  background: #7f1d1d;
+  border-color: #7f1d1d;
+  cursor: pointer;
+}
+
+.slider-status {
+  margin: 0;
+  color: #ffb4ab;
+  min-height: 1.2rem;
+}
+
+.slider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.8rem;
+}
+
+.slider-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.slider-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+.slider-card-foot {
+  padding: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.slider-card-foot p {
+  margin: 0;
+  font-size: 0.86rem;
+}
+
+.slider-card-foot button {
+  border: 1px solid #7f1d1d;
+  background: #1a1010;
+  color: #ff8a80;
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+}
