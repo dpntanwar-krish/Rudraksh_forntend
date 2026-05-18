@@ -154,6 +154,16 @@
   color: #ffe7e6;
 }
 
+.news-thumb {
+  width: 100%;
+  max-width: 240px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #3c2727;
+  margin-bottom: 0.5rem;
+}
+
 .news-item p {
   margin: 0.35rem 0 0;
   color: #c7cad1;

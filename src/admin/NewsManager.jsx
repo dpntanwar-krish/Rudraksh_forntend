@@ -1,38 +1,91 @@
 import { useMemo, useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 import "./NewsManager.css";
+import { server_url } from "../url/url";
 
 export default function NewsManager() {
   const [isTickerOn, setIsTickerOn] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [newsItems, setNewsItems] = useState([]);
-  const [form, setForm] = useState({ title: "", description: "" });
+  const [form, setForm] = useState({ title: "", description: "", image: null });
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const emptyMessage = useMemo(() => {
+    if (loading) return "Loading news items...";
     if (status) return status;
     return "Unable to load news items.";
-  }, [status]);
+  }, [loading, status]);
 
-  const handleAddNews = (e) => {
+  const fetchNews = async () => {
+    setLoading(true);
+    setStatus("");
+    try {
+      const res = await axios.get(server_url + "/News/all");
+      if (res?.data?.status === true) {
+        setNewsItems(Array.isArray(res.data.data) ? res.data.data : []);
+      } else {
+        setStatus(String(res?.data?.msg || "Unable to load news items."));
+      }
+    } catch (err) {
+      setStatus(err?.response?.data?.msg || "Unable to load news items.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
+  const handleAddNews = async (e) => {
     e.preventDefault();
     if (!form.title.trim()) {
       setStatus("Title is required.");
       return;
     }
+    if (!form.image) {
+      setStatus("News image is required.");
+      return;
+    }
 
-    const newItem = {
-      id: Date.now(),
-      title: form.title.trim(),
-      description: form.description.trim(),
-    };
-    setNewsItems((prev) => [newItem, ...prev]);
-    setForm({ title: "", description: "" });
-    setStatus("");
-    setShowForm(false);
+    try {
+      const formData = new FormData();
+      formData.append("title", form.title.trim());
+      formData.append("description", form.description.trim());
+      formData.append("image", form.image);
+
+      const res = await axios.post(server_url + "/News/save", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res?.data?.status === true) {
+        setForm({ title: "", description: "", image: null });
+        setStatus("");
+        setShowForm(false);
+        fetchNews();
+      } else {
+        setStatus(String(res?.data?.msg || "Unable to save news."));
+      }
+    } catch (err) {
+      setStatus(err?.response?.data?.msg || "Unable to save news.");
+    }
   };
 
-  const handleDelete = (id) => {
-    setNewsItems((prev) => prev.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    const ok = window.confirm("Delete this news item?");
+    if (!ok) return;
+    try {
+      const res = await axios.delete(server_url + "/News/delete/" + id);
+      if (res?.data?.status === true) {
+        fetchNews();
+      } else {
+        setStatus(String(res?.data?.msg || "Unable to delete news."));
+      }
+    } catch (err) {
+      setStatus(err?.response?.data?.msg || "Unable to delete news.");
+    }
   };
 
   return (
@@ -71,6 +124,11 @@ export default function NewsManager() {
             value={form.title}
             onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
           />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setForm((prev) => ({ ...prev, image: e.target.files?.[0] || null }))}
+          />
           <textarea
             rows={3}
             placeholder="Description (optional)"
@@ -89,12 +147,13 @@ export default function NewsManager() {
         ) : (
           <div className="news-list">
             {newsItems.map((item) => (
-              <article className="news-item" key={item.id}>
+              <article className="news-item" key={item._id}>
                 <div>
+                  {item.imageUrl ? <img className="news-thumb" src={item.imageUrl} alt={item.title} /> : null}
                   <h4>{item.title}</h4>
                   <p>{item.description || "No description"}</p>
                 </div>
-                <button type="button" onClick={() => handleDelete(item.id)}>
+                <button type="button" onClick={() => handleDelete(item._id)}>
                   Delete
                 </button>
               </article>
