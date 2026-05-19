@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./VideoManager.css";
+import "./File.css";
 import axios from "axios";
 import { server_url } from "../url/url";
 
@@ -108,13 +108,13 @@ function VideoManager() {
   };
 
   return (
-    <div className="video-manager-page">
-      <div className="video-manager-wrap">
-        <h1 className="video-manager-title">Video Upload Form</h1>
+    <div className="file-page">
+      <div className="file-wrap">
+        <h1 className="file-title">Video Upload Form</h1>
 
-        <form className="video-manager-form" onSubmit={handleSubmit} encType="multipart/form-data">
+        <form className="file-form" onSubmit={handleSubmit} encType="multipart/form-data">
           <input
-            className="video-manager-input"
+            className="file-input"
             type="text"
             placeholder="Video title (optional)"
             value={title}
@@ -122,7 +122,7 @@ function VideoManager() {
           />
 
           <input
-            className="video-manager-input"
+            className="file-input"
             type="file"
             name="videos"
             multiple
@@ -130,7 +130,7 @@ function VideoManager() {
             ref={videoInputRef}
             onChange={handleFileChange}
           />
-          <p className="video-manager-help-text">
+          <p className="file-help-text">
             {videos.length ? `${videos.length} video(s) selected` : "Select one or more videos (max 8MB each)"}
           </p>
 
@@ -140,26 +140,27 @@ function VideoManager() {
           {statusMsg && <p className="status-msg">{statusMsg}</p>}
         </form>
 
-        <div className="video-grid">
+        <div className="file-grid">
           {isLoading ? (
             <p>Loading videos...</p>
           ) : allVideos.length > 0 ? (
             allVideos.map((item) => (
-              <div key={item._id} className="video-card">
+              <div key={item._id} className="file-card">
                 {item.videoUrl ? (
                   <video
-                    className="video-player"
+                    className="file-img"
                     controls
                     src={
                       item.videoUrl && item.videoUrl.startsWith('/')
                         ? server_url + item.videoUrl
                         : item.videoUrl
                     }
+                    style={{ backgroundColor: "#000", objectFit: "contain", maxHeight: "250px" }}
                   />
                 ) : null}
 
-                <div className="video-content">
-                  <h3 className="video-name">{item.title || "Untitled"}</h3>
+                <div className="file-content">
+                  <h3 className="file-name">{item.title || "Untitled"}</h3>
                   <button className="delete-btn" type="button" onClick={() => deleteVideo(item._id)}>
                     <svg className="delete-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <polyline points="3 6 5 6 21 6"></polyline>
