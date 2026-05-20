@@ -28,7 +28,10 @@ function Home() {
         const res = await axios.get(server_url + "/Slider/all");
         if (res?.data?.status === true) {
           const list = Array.isArray(res.data.data) ? res.data.data : [];
-          const images = list.map((item) => item.imageUrl).filter(Boolean);
+          const images = list
+            .filter((item) => item?.isActive !== false)
+            .map((item) => item.imageUrl || item.image)
+            .filter(Boolean);
           setSlides(images);
         }
       } catch (err) {

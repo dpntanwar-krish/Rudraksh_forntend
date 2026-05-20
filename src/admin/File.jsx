@@ -9,6 +9,9 @@ function File() {
     const [files, setFiles] = useState([]);
 
     const [allFiles, setAllFiles] = useState([]);
+    const [folderInput, setFolderInput] = useState("");
+    const [folders, setFolders] = useState([]);
+    const [selectedFolder, setSelectedFolder] = useState("gallery");
     const fileInputRef = useRef(null);
 
     /* Fetch */
@@ -22,8 +25,24 @@ function File() {
         }
     };
 
+    const fetchFolders = async () => {
+        try {
+            const res = await axios.get(server_url + "/File/folders");
+            const rows = Array.isArray(res?.data?.data) ? res.data.data : [];
+            const names = rows.map((row) => row.name).filter(Boolean);
+            if (!names.includes("gallery")) {
+                names.unshift("gallery");
+            }
+            setFolders(names);
+        } catch (error) {
+            console.error("[Folder] Failed to fetch folders:", error?.response?.data || error.message);
+            setFolders(["gallery"]);
+        }
+    };
+
     useEffect(() => {
         fetchFiles();
+        fetchFolders();
     }, []);
 
     /* Submit */
@@ -40,6 +59,7 @@ function File() {
         const formData = new FormData();
 
         formData.append("title", title);
+        formData.append("folder", selectedFolder);
 
         for (let i = 0; i < files.length; i++) {
 
@@ -59,6 +79,7 @@ function File() {
             alert("Uploaded");
 
             await fetchFiles();
+            await fetchFolders();
             setTitle("");
             setFiles([]);
             if (fileInputRef.current) {
@@ -97,6 +118,47 @@ function File() {
     }
   };
 
+  const createFolder = async () => {
+    const folder = folderInput.trim();
+    if (!folder) {
+      alert("Please enter a folder name.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(server_url + "/File/create-folder", { folder });
+      alert(response?.data?.msg || "Folder created.");
+      setFolderInput("");
+      setSelectedFolder(folder);
+      await fetchFolders();
+      await fetchFiles();
+    } catch (error) {
+      alert(error?.response?.data?.msg || "Failed to create folder.");
+    }
+  };
+
+  const deleteFolder = async () => {
+    if (!selectedFolder || selectedFolder === "gallery") {
+      alert("Default folder cannot be deleted.");
+      return;
+    }
+
+    const ok = window.confirm(`Delete folder "${selectedFolder}" and all images inside it?`);
+    if (!ok) return;
+
+    try {
+      const response = await axios.delete(server_url + `/File/delete-folder/${encodeURIComponent(selectedFolder)}`);
+      alert(response?.data?.msg || "Folder deleted.");
+      setSelectedFolder("gallery");
+      await fetchFolders();
+      await fetchFiles();
+    } catch (error) {
+      alert(error?.response?.data?.msg || "Failed to delete folder.");
+    }
+  };
+
+  const filteredFiles = allFiles.filter((item) => (item.folder || "gallery") === selectedFolder);
+
 
 
     return (
@@ -104,6 +166,31 @@ function File() {
           
             <div className="file-wrap">
                 <h1 className="file-title">Multiple Upload Form</h1>
+                <div className="folder-controls">
+                    <input
+                        className="file-input"
+                        type="text"
+                        placeholder="Enter new folder name (example: wedding-2026)"
+                        value={folderInput}
+                        onChange={(e) => setFolderInput(e.target.value)}
+                    />
+                    <button className="upload-btn" type="button" onClick={createFolder}>Create Folder</button>
+                    <button className="delete-btn" type="button" onClick={deleteFolder}>Delete Folder</button>
+                </div>
+
+                <div className="folder-controls">
+                    <select
+                        className="file-input"
+                        value={selectedFolder}
+                        onChange={(e) => setSelectedFolder(e.target.value)}
+                    >
+                        {folders.map((folderName) => (
+                            <option key={folderName} value={folderName}>
+                                Folder: {folderName}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                 <form className="file-form" onSubmit={handleSubmit} encType="multipart/form-data">
                     <input
@@ -132,7 +219,7 @@ function File() {
                 </form>
 
                 <div className="file-grid">
-                    {allFiles.map((item) => (
+                    {filteredFiles.map((item) => (
                         <div key={item._id} className="file-card">
                             {item.imageUrl ? (
                                 <img
@@ -157,7 +244,7 @@ function File() {
                                         <path d="M14 11v6"></path>
                                         <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
                                     </svg>
-                                    Deleteee
+                                    Delete
                                 </button>
                             </div>
                         </div>
