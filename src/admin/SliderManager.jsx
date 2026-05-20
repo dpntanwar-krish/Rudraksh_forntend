@@ -161,7 +161,7 @@ export default function SliderManager() {
         <div className="slider-loading">Loading sliders...</div>
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="slider-sequence">
+          <Droppable droppableId="slider-sequence" direction="horizontal">
             {(provided) => (
               <div className="slider-grid" ref={provided.innerRef} {...provided.droppableProps}>
                 {sliders.map((item, index) => (

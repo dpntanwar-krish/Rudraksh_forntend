@@ -58,13 +58,17 @@
 }
 
 .slider-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  display: flex;
   gap: 0.9rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.35rem;
+  scroll-behavior: smooth;
 }
 
 .slider-card {
   position: relative;
+  flex: 0 0 260px;
   background: linear-gradient(150deg, #1a1515, #130f0f);
   border: 1px solid #332525;
   border-radius: 12px;
@@ -154,8 +158,8 @@
 }
 
 @media (max-width: 720px) {
-  .slider-grid {
-    grid-template-columns: 1fr;
+  .slider-card {
+    flex-basis: 88%;
   }
 
   .slider-card img {
