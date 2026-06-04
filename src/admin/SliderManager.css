@@ -93,6 +93,32 @@
   padding: 0.2rem 0.5rem;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+}
+
+.seq-input {
+  width: 30px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 0.76rem;
+  font-family: inherit;
+  outline: none;
+  text-align: center;
+  padding: 0;
+  /* -moz-appearance: textfield; */
+}
+
+.seq-input::-webkit-outer-spin-button,
+.seq-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.seq-input:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
 }
 
 .slider-card-handle {

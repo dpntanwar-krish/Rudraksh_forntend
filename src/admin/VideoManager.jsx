@@ -7,26 +7,31 @@ function VideoManager() {
   const [title, setTitle] = useState("");
   const [videos, setVideos] = useState([]);
   const [allVideos, setAllVideos] = useState([]);
+  const [folders, setFolders] = useState([]);
+  const [selectedFolder, setSelectedFolder] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
   const videoInputRef = useRef(null);
   const [statusMsg, setStatusMsg] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchVideos = async () => {
+  const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(server_url + "/Video/videos");
-      setAllVideos(Array.isArray(res.data) ? res.data : []);
+      const [vRes, fRes] = await Promise.all([
+        axios.get(server_url + "/Video/videos"),
+        axios.get(server_url + "/Video/folders")
+      ]);
+      setAllVideos(Array.isArray(vRes.data) ? vRes.data : []);
+      setFolders(fRes.data.data || []);
     } catch (error) {
-      console.error("[Video] Failed to fetch videos:", error?.response?.data || error.message);
-      setStatusMsg("Failed to fetch videos.");
+      setStatusMsg("Failed to fetch.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchVideos();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files || []);
@@ -54,26 +59,20 @@ function VideoManager() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!videos.length) {
-      alert("Please select at least one video before uploading.");
-      return;
-    }
+    if (!videos.length || !selectedFolder) return alert("Select videos and a folder");
 
     const formData = new FormData();
     formData.append("title", title);
+    formData.append("folder", selectedFolder);
     for (let i = 0; i < videos.length; i++) {
       formData.append("videos", videos[i]);
     }
 
     setStatusMsg("Uploading...");
     try {
-      await axios.post(server_url + "/Video/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      alert("Uploaded successfully!");
+      await axios.post(server_url + "/Video/upload", formData);
       setStatusMsg("Uploaded successfully!");
-      await fetchVideos();
+      await fetchData();
       setTitle("");
       setVideos([]);
       if (videoInputRef.current) {
@@ -87,6 +86,20 @@ function VideoManager() {
     }
   };
 
+  const handleCreateFolder = async () => {
+    if (!newFolderName.trim()) return;
+    await axios.post(`${server_url}/Video/create-folder`, { folder: newFolderName });
+    setNewFolderName("");
+    setShowModal(false);
+    fetchData();
+  };
+
+  const handleDeleteFolder = async (name) => {
+    if (!window.confirm(`Delete folder "${name}"?`)) return;
+    await axios.delete(`${server_url}/Video/delete-folder/${name}`);
+    fetchData();
+  };
+
   const deleteVideo = async (id) => {
     try {
       const isConfirmed = window.confirm("Do you want to delete this video?");
@@ -97,7 +110,7 @@ function VideoManager() {
       const response = await axios.delete(server_url + `/Video/delete/${id}`);
 
       if (response.data.status === true) {
-        await fetchVideos();
+        await fetchData();
         alert(`Deleted successfully!`);
       } else {
         alert(response.data.msg);

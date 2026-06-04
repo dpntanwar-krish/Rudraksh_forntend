@@ -11,6 +11,34 @@ function reorderList(list, startIndex, endIndex) {
   return result;
 }
 
+function SequenceInput({ index, total, onChange }) {
+  const [val, setVal] = useState(index + 1);
+
+  useEffect(() => {
+    setVal(index + 1);
+  }, [index]);
+
+  const handleBlur = () => {
+    let parsed = parseInt(val, 10);
+    if (isNaN(parsed)) parsed = index + 1;
+    if (parsed !== index + 1) {
+      onChange(index, parsed);
+    } else {
+      setVal(index + 1);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.target.blur();
+    }
+  };
+
+  return (
+    <input type="number" min="1" max={total} value={val} onChange={(e) => setVal(e.target.value)} onBlur={handleBlur} onKeyDown={handleKeyDown} className="seq-input" title="Type to change order" />
+  );
+}
+
 export default function SliderManager() {
   const [title, setTitle] = useState("");
   const [files, setFiles] = useState([]);
@@ -133,6 +161,29 @@ export default function SliderManager() {
     }
   };
 
+  const handleSequenceChange = async (currentIndex, newPosition) => {
+    let newIndex = newPosition - 1;
+    if (newIndex < 0) newIndex = 0;
+    if (newIndex >= sliders.length) newIndex = sliders.length - 1;
+
+    if (currentIndex === newIndex) return;
+
+    const updated = reorderList(sliders, currentIndex, newIndex);
+    setSliders(updated);
+
+    try {
+      setIsSavingSequence(true);
+      await saveSequence(updated);
+      showToast("Sequence updated");
+    } catch (err) {
+      console.error(err);
+      setStatusMsg(err?.response?.data?.msg || "Failed to save sequence");
+      await fetchSliders();
+    } finally {
+      setIsSavingSequence(false);
+    }
+  };
+
   return (
     <div className="slider-manager">
       <form className="slider-form" onSubmit={handleSubmit} encType="multipart/form-data">
@@ -172,7 +223,9 @@ export default function SliderManager() {
                         ref={dragProvided.innerRef}
                         {...dragProvided.draggableProps}
                       >
-                        <div className="slider-card-seq">#{index + 1}</div>
+                        <div className="slider-card-seq">
+                          #<SequenceInput index={index} total={sliders.length} onChange={handleSequenceChange} />
+                        </div>
                         <div className="slider-card-handle" {...dragProvided.dragHandleProps} title="Drag to reorder">
                           Drag
                         </div>
@@ -181,7 +234,7 @@ export default function SliderManager() {
                           <p>{item.title || "Untitled slider"}</p>
                           <div className="slider-actions">
                             <button type="button" onClick={() => handleToggle(item._id)}>
-                              {item.isActive ? "Active" : "Inactive"}
+                              {item.isActive ? "Turn Off" : "Turn On"}
                             </button>
                             <button type="button" onClick={() => handleDelete(item._id)} aria-label="Delete slider">
                               Delete

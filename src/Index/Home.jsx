@@ -12,6 +12,7 @@ function Home() {
   const [slides, setSlides] = useState([]);
   const [current, setCurrent] = useState(0);
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -176,12 +177,50 @@ function Home() {
               <img src={rc} alt="Rudraksh Creation" className="brand-logo" />
             </a>
 
-            <nav className="nav-links">
+            <button
+              type="button"
+              className="menu-toggle"
+              aria-label="Open menu"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+
+            {isMobileMenuOpen ? (
+              <button
+                type="button"
+                className="menu-overlay"
+                aria-label="Close menu"
+                onClick={() => setIsMobileMenuOpen(false)}
+              />
+            ) : null}
+
+            <nav className={`nav-links ${isMobileMenuOpen ? "open" : ""}`}>
               {navItems.map((item, idx) => (
-                <a key={item} href="#" className={idx === 0 ? "active" : ""}>
+                <a
+                  key={item}
+                  href="#"
+                  className={idx === 0 ? "active" : ""}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   {item}
                 </a>
               ))}
+
+              <div className="mobile-contact-menu">
+                <p><strong>CALL US NOW</strong><span>09814573940 | 9517511636</span></p>
+                <p><strong>EMAIL ADDRESS</strong><span>rcbti@hotmail.com</span></p>
+                <p><strong>OFFICE ADDRESS</strong><span>Near Bank of Baroda, G.T. Road, Bathinda</span></p>
+                <a href="#" className="mobile-order" onClick={() => setIsMobileMenuOpen(false)}>Make An Order</a>
+              </div>
+
+              <div className="mobile-socials">
+                <a href="#" className="social-btn fb" aria-label="Facebook">f</a>
+                <a href="#" className="social-btn ig" aria-label="Instagram">O</a>
+                <a href="#" className="social-btn yt" aria-label="YouTube">&gt;</a>
+              </div>
             </nav>
 
             <div className="nav-actions">

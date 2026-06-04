@@ -4,6 +4,10 @@ const videoSchema = new mongoose.Schema({
   title: {
     type: String,
   },
+  folder: {
+    type: String,
+    default: "General",
+  },
   videoUrl: {
     type: String,
     required: true,
