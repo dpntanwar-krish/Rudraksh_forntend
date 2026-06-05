@@ -168,7 +168,7 @@ function VideoManager() {
                         ? server_url + item.videoUrl
                         : item.videoUrl
                     }
-                    style={{ backgroundColor: "#000", objectFit: "contain", maxHeight: "250px" }}
+                    style={{ backgroundColor: "#000", objectFit: "contain", maxHeight: "200px" }}
                   />
                 ) : null}
 
