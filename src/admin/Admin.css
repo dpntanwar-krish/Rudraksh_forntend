@@ -200,7 +200,6 @@
   background: rgba(0, 0, 0, 0.15);
   border-left: 2px solid #b31217;
   margin-left: 12px;
-  padding-left: 8px;
   margin-top: 0.2rem;
 }
 
@@ -558,5 +557,25 @@
 
   .sidebar-admin-meta {
     display: block;
+  }
+}
+
+/* Dashboard Page Specific Styles */
+.admin-dashboard-page {
+  padding: 1.2rem 1.4rem;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .admin-dashboard-page {
+    padding: 1rem;
+  }
+
+  .dashboard-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
   }
 }

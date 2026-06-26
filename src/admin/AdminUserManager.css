@@ -170,3 +170,45 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 480px) {
+  .admin-user-form,
+  .admin-user-list {
+    padding: 0.8rem;
+  }
+
+  .admin-user-form h2,
+  .admin-user-list h3 {
+    font-size: 1.2rem;
+  }
+
+  .admin-user-form p {
+    font-size: 0.85rem;
+  }
+
+  .admin-user-grid label {
+    font-size: 0.8rem;
+  }
+
+  .admin-user-grid input {
+    padding: 0.6rem 0.7rem;
+  }
+
+  .admin-user-save,
+  .admin-user-secondary,
+  .admin-user-actions button {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.9rem;
+  }
+
+  .admin-user-table th,
+  .admin-user-table td {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  .admin-user-actions {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+}
