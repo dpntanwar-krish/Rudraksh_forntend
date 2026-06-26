@@ -145,7 +145,8 @@ export default function SliderManager() {
     if (!result.destination) return;
     if (result.source.index === result.destination.index) return;
 
-    const updated = reorderList(sliders, result.source.index, result.destination.index);
+    const reordered = reorderList(sliders, result.source.index, result.destination.index);
+    const updated = reordered.map((s, idx) => ({ ...s, sequence: idx + 1 }));
     setSliders(updated);
 
     try {
@@ -155,20 +156,19 @@ export default function SliderManager() {
     } catch (err) {
       console.error(err);
       setStatusMsg(err?.response?.data?.msg || "Failed to save sequence");
-      await fetchSliders();
+      await fetchSliders(); // Revert on failure
     } finally {
       setIsSavingSequence(false);
     }
   };
 
   const handleSequenceChange = async (currentIndex, newPosition) => {
-    let newIndex = newPosition - 1;
-    if (newIndex < 0) newIndex = 0;
-    if (newIndex >= sliders.length) newIndex = sliders.length - 1;
-
+    if (newPosition < 1 || newPosition > sliders.length) return;
+    const newIndex = newPosition - 1;
     if (currentIndex === newIndex) return;
 
-    const updated = reorderList(sliders, currentIndex, newIndex);
+    const reordered = reorderList(sliders, currentIndex, newIndex);
+    const updated = reordered.map((s, idx) => ({ ...s, sequence: idx + 1 }));
     setSliders(updated);
 
     try {
@@ -178,7 +178,7 @@ export default function SliderManager() {
     } catch (err) {
       console.error(err);
       setStatusMsg(err?.response?.data?.msg || "Failed to save sequence");
-      await fetchSliders();
+      await fetchSliders(); // Revert on failure
     } finally {
       setIsSavingSequence(false);
     }
@@ -212,7 +212,7 @@ export default function SliderManager() {
         <div className="slider-loading">Loading sliders...</div>
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="slider-sequence">
+          <Droppable droppableId="slider-sequence" direction="horizontal">
             {(provided) => (
               <div className="slider-grid" ref={provided.innerRef} {...provided.droppableProps}>
                 {sliders.map((item, index) => (
@@ -222,12 +222,10 @@ export default function SliderManager() {
                         className={`slider-card ${snapshot.isDragging ? "dragging" : ""}`}
                         ref={dragProvided.innerRef}
                         {...dragProvided.draggableProps}
+                        {...dragProvided.dragHandleProps}
                       >
                         <div className="slider-card-seq">
                           #<SequenceInput index={index} total={sliders.length} onChange={handleSequenceChange} />
-                        </div>
-                        <div className="slider-card-handle" {...dragProvided.dragHandleProps} title="Drag to reorder">
-                          Drag
                         </div>
                         <img src={item.imageUrl || item.image} alt={item.title || "Slider"} />
                         <div className="slider-card-foot">

@@ -100,13 +100,16 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .brand-logo {
-  height: 56px;
-  width: 380px;
-  object-fit: contain; 
+  height: 98px;
+  width: auto;
+  object-fit: contain;
+  object-position: left center;
   display: block;
 }
 
@@ -1114,7 +1117,8 @@
   }
 
   .brand-logo {
-    height: 38px;
+    height: 67px;
+    width: auto;
   }
 
   .menu-toggle {
@@ -1294,90 +1298,267 @@
   }
 }
 
+.home-enquiry-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #c4161c 0%, #8f0d12 100%);
+  color: #fff;
+  padding: 0.82rem 1.2rem;
+  font-family: "Sora", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 14px 32px rgba(179, 18, 23, 0.38);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.home-enquiry-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(179, 18, 23, 0.45);
+}
+
+.home-enquiry-fab-icon {
+  display: inline-flex;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.home-enquiry-fab-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
 .home-enquiry-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(10, 12, 18, 0.62);
+  backdrop-filter: blur(4px);
   display: grid;
   place-items: center;
   z-index: 2000;
   padding: 1rem;
+  animation: homeEnquiryFadeIn 0.25s ease;
+}
+
+@keyframes homeEnquiryFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .home-enquiry-modal {
-  width: min(760px, 96%);
+  width: min(720px, 96vw);
+  max-height: min(92vh, 860px);
+  overflow-y: auto;
   background: #ffffff;
-  border-radius: 14px;
-  padding: 1rem;
+  border-radius: 18px;
+  padding: 1.6rem 1.5rem 1.4rem;
   position: relative;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28);
+  animation: homeEnquirySlideUp 0.28s ease;
+}
+
+@keyframes homeEnquirySlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .home-enquiry-close {
   position: absolute;
-  right: 0.8rem;
-  top: 0.6rem;
+  right: 0.85rem;
+  top: 0.85rem;
+  width: 2rem;
+  height: 2rem;
   border: 0;
-  background: transparent;
-  font-size: 1.3rem;
+  border-radius: 50%;
+  background: #f3f4f6;
+  color: #4b5563;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.home-enquiry-close svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.home-enquiry-close:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.home-enquiry-head {
+  padding-right: 2rem;
+  margin-bottom: 1.1rem;
+}
+
+.home-enquiry-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #b31217;
 }
 
 .home-enquiry-modal h2 {
-  margin: 0 0 0.9rem;
+  margin: 0;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  color: #151923;
+  line-height: 1.2;
+}
+
+.home-enquiry-helper {
+  margin: 0.55rem 0 0;
+  color: #6a7280;
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
 .home-enquiry-form {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.95rem;
 }
 
 .home-enquiry-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
+  gap: 0.95rem;
 }
 
-.home-enquiry-form input,
-.home-enquiry-form textarea {
+.home-enquiry-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.home-enquiry-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #2d3642;
+}
+
+.home-enquiry-control {
   width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 0.6rem 0.7rem;
+  box-sizing: border-box;
+  border: 1px solid #d6dce3;
+  border-radius: 12px;
+  padding: 0.72rem 0.85rem;
+  background: #fff;
+  color: #151923;
+  font-size: 0.94rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.home-enquiry-form button {
-  width: max-content;
+.home-enquiry-form input.home-enquiry-control,
+.home-enquiry-form select.home-enquiry-control {
+  height: 46px;
+}
+
+.home-enquiry-form textarea.home-enquiry-control {
+  min-height: 112px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.home-enquiry-control::placeholder {
+  color: #9aa2ae;
+}
+
+.home-enquiry-control:focus {
+  outline: none;
+  border-color: rgba(179, 18, 23, 0.55);
+  box-shadow: 0 0 0 4px rgba(179, 18, 23, 0.12);
+}
+
+.home-enquiry-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin-top: 0.15rem;
+}
+
+.home-enquiry-submit {
   border: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #b31217;
   color: #fff;
-  padding: 0.55rem 0.9rem;
+  padding: 0.72rem 1.35rem;
+  font-family: "Sora", sans-serif;
+  font-size: 0.94rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   cursor: pointer;
+  box-shadow: 0 14px 24px rgba(179, 18, 23, 0.24);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.2s ease;
+}
+
+.home-enquiry-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 30px rgba(179, 18, 23, 0.3);
+}
+
+.home-enquiry-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .home-enquiry-status {
   margin: 0;
-  color: #b31217;
   min-height: 1.2rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-.open-enquiry-btn {
-  position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 1500;
-  border: 0;
-  border-radius: 999px;
-  background: #b31217;
-  color: #fff;
-  padding: 0.7rem 1rem;
-  cursor: pointer;
+.home-enquiry-status.is-visible {
+  opacity: 1;
+}
+
+.home-enquiry-status.is-error {
+  color: #b31217;
+}
+
+.home-enquiry-status.is-success {
+  color: #15803d;
 }
 
 @media (max-width: 720px) {
   .home-enquiry-grid {
     grid-template-columns: 1fr;
+  }
+
+  .home-enquiry-fab {
+    right: 0.85rem;
+    bottom: 0.85rem;
+    padding: 0.72rem 1rem;
+    font-size: 0.86rem;
+  }
+
+  .home-enquiry-modal {
+    padding: 1.25rem 1rem 1rem;
+    border-radius: 14px;
   }
 }

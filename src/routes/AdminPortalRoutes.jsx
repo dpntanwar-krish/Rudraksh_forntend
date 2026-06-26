@@ -37,45 +37,44 @@ export default function AdminPortalRoutes() {
   }, []);
 
   const routeView = useMemo(() => {
+    if (path === "/adminportal" || path === "/admin/login") {
+      navigate("/admin");
+      return null;
+    }
+
     if (path === "/admin/signup") {
       return (
         <Signup
-          onGoLogin={() => navigate("/admin/login")}
-          onSignupDone={() => navigate("/admin/login")}
+          onGoLogin={() => navigate("/admin")}
+          onSignupDone={() => navigate("/admin")}
         />
       );
     }
 
-    if (path === "/admin/login") {
+    if (path === "/admin") {
+      if (auth?.token) {
+        return (
+          <Admin
+            onLogout={() => {
+              localStorage.removeItem(AUTH_KEY);
+              setAuth(null);
+            }}
+          />
+        );
+      }
+
       return (
         <Login
           onGoSignup={() => navigate("/admin/signup")}
           onLoginSuccess={(payload) => {
             localStorage.setItem(AUTH_KEY, JSON.stringify(payload));
             setAuth(payload);
-            navigate("/adminportal");
           }}
         />
       );
     }
 
-    if (path === "/adminportal") {
-      if (!auth?.token) {
-        navigate("/admin/login");
-        return null;
-      }
-      return (
-        <Admin
-          onLogout={() => {
-            localStorage.removeItem(AUTH_KEY);
-            setAuth(null);
-            navigate("/admin/login");
-          }}
-        />
-      );
-    }
-
-    navigate("/admin/login");
+    navigate("/admin");
     return null;
   }, [auth, path]);
 

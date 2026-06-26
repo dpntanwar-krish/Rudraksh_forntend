@@ -1,1 +1,78 @@
 @import "tailwindcss";
+
+:root {
+	--color-bg: #F7F6F4; /* light neutral matching Slate */
+	--color-surface: #FFFFFF;
+	--color-surface-alt: #F7F6F4;
+	--color-primary: #2C3138; /* slate */
+	--color-accent: #F59E0B; /* gold */
+	--color-accent-rgb: 245,158,11;
+	--color-accent-hover: #D97706;
+	--color-accent-hover-rgb: 217,119,6;
+	--color-text: #0B1220; /* dark navy */
+	--color-border: #E6E6E6;
+	--color-muted: #6B7280;
+	--color-text-muted: #555555;
+	--color-video-bg: #000000;
+	--color-link: #1F6FEB;
+	--color-link-bg: #EAF4FF;
+	--color-danger: #D03A3A;
+}
+
+html, body {
+	background: var(--color-bg);
+	color: var(--color-text);
+	font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Animated layered 3D-style background for a classic 'wow' look */
+.app-bg {
+	position: relative;
+	overflow: hidden;
+	min-height: 100vh;
+	display: block;
+	background: linear-gradient(135deg, rgba(var(--color-accent-rgb),0.06) 0%, var(--color-bg) 40%);
+}
+.app-bg .app-content { position: relative; z-index: 3; }
+
+.app-bg::before {
+	content: "";
+	position: absolute;
+	inset: -20%;
+	background:
+		radial-gradient(circle at 25% 30%, rgba(var(--color-accent-rgb),0.14), transparent 18%),
+		radial-gradient(circle at 80% 70%, rgba(11,18,32,0.06), transparent 12%);
+	filter: blur(60px) saturate(1.05);
+	transform: translate3d(0,0,0);
+	animation: drift 18s linear infinite alternate;
+	z-index: 0;
+	pointer-events: none;
+}
+
+.app-bg::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, rgba(var(--color-accent-hover-rgb),0.08), rgba(255,255,255,0) 35%);
+	mix-blend-mode: overlay;
+	transform: translateX(-25%);
+	animation: slide 10s linear infinite;
+	z-index: 1;
+	pointer-events: none;
+}
+
+@keyframes drift {
+	from { transform: translate3d(-5%, -3%, 0) scale(1.02); }
+	to   { transform: translate3d(6%, 4%, 0) scale(1.0); }
+}
+
+@keyframes slide {
+	from { transform: translateX(-30%); }
+	to   { transform: translateX(10%); }
+}
+
+/* Subtle parallax tilt on hover for a 3D impression */
+.app-bg .media-card, .app-bg .folder-card { transform-style: preserve-3d; will-change: transform; }
+.app-bg .media-card:hover, .app-bg .folder-card:hover { transform: translateY(-8px) rotateX(1deg); }

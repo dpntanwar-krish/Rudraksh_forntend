@@ -58,8 +58,8 @@
 }
 
 .slider-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.9rem;
 }
 
@@ -70,6 +70,8 @@
   border-radius: 12px;
   overflow: hidden;
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  width: calc(25% - 0.9rem);
+  min-width: 200px;
 }
 
 .slider-card:hover {
@@ -190,13 +192,13 @@
 }
 
 @media (max-width: 1100px) {
-  .slider-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .slider-card {
+    width: calc(33.33% - 0.9rem);
   }
 }
 
 @media (max-width: 860px) {
-  .slider-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .slider-card {
+    width: calc(50% - 0.9rem);
   }
 }

@@ -1,0 +1,172 @@
+.admin-user-manager {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-user-form,
+.admin-user-list {
+  background: linear-gradient(160deg, var(--admin-panel), var(--admin-panel-2));
+  border: 1px solid var(--admin-border);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.admin-user-form-head,
+.admin-user-list-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-user-form h2,
+.admin-user-list h3 {
+  margin: 0;
+}
+
+.admin-user-form p {
+  margin: 0.35rem 0 0;
+  color: var(--admin-muted);
+  font-size: 0.9rem;
+}
+
+.admin-user-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.admin-user-grid label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--admin-muted);
+  font-size: 0.88rem;
+}
+
+.admin-user-grid input {
+  width: 100%;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: #120f0f;
+  color: var(--admin-text);
+  padding: 0.75rem 0.85rem;
+  outline: none;
+}
+
+.admin-user-grid input:focus {
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.15);
+}
+
+.admin-user-save,
+.admin-user-secondary,
+.admin-user-actions button {
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  cursor: pointer;
+  color: #fff;
+  transition: 0.2s ease;
+}
+
+.admin-user-save {
+  margin-top: 1rem;
+  background: var(--admin-accent);
+  padding: 0.75rem 1.1rem;
+}
+
+.admin-user-secondary,
+.admin-user-actions button {
+  background: #241414;
+  padding: 0.55rem 0.8rem;
+}
+
+.admin-user-save:hover,
+.admin-user-secondary:hover,
+.admin-user-actions button:hover {
+  transform: translateY(-1px);
+  border-color: var(--admin-accent-soft);
+}
+
+.admin-user-save:disabled,
+.admin-user-secondary:disabled,
+.admin-user-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.admin-user-message,
+.admin-user-error {
+  margin-top: 0.85rem;
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.9rem;
+}
+
+.admin-user-message {
+  background: rgba(74, 222, 128, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  color: #86efac;
+}
+
+.admin-user-error {
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  color: #fca5a5;
+}
+
+.admin-user-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-user-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.admin-user-table th,
+.admin-user-table td {
+  border-bottom: 1px solid var(--admin-border);
+  padding: 0.85rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-user-table th {
+  color: var(--admin-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.admin-user-table td {
+  color: var(--admin-text);
+}
+
+.admin-user-empty {
+  text-align: center;
+  color: var(--admin-muted);
+}
+
+.admin-user-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.admin-user-actions .danger {
+  background: #3a1010;
+  color: #fca5a5;
+}
+
+@media (max-width: 720px) {
+  .admin-user-form-head,
+  .admin-user-list-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-user-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,28 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Home.css";
-import rc from "/image/1.png";
+import SiteNav from "./SiteNav";
+import { useRevealOnScroll } from "./useRevealOnScroll";
 import Testimonials from "./Testimonials";
 import VideoSection from "./VideoSection";
 import Sponsors from "./Sponsors";
 import axios from "axios";
 import { server_url } from "../url/url";
+import SiteFooter from "./SiteFooter";
 
 function Home() {
-  const navItems = ["Home", "About", "Portfolio", "Services", "Gallery", "Contact"];
   const [slides, setSlides] = useState([]);
   const [current, setCurrent] = useState(0);
-  const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
     phone: "",
-    subject: "",
+    subject: "Printing Services",
     message: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const [statusMsg, setStatusMsg] = useState("");
+  const [isError, setIsError] = useState(false);
 
+  const subjectOptions = [
+    "Printing Services",
+    "Web Design Services",
+    "Offset Services",
+    "Design Services",
+    "Photoshoot & Video",
+    "Events & Promotions",
+    "Other",
+  ];
+
+  const closeEnquiryModal = useCallback(() => {
+    setIsEnquiryModalOpen(false);
+    setStatusMsg("");
+    setIsError(false);
+  }, []);
+
+  useRevealOnScroll();
   useEffect(() => {
     const fetchHomeSliders = async () => {
       try {
@@ -42,6 +60,23 @@ function Home() {
 
     fetchHomeSliders();
   }, []);
+
+  useEffect(() => {
+    if (!isEnquiryModalOpen) return undefined;
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") closeEnquiryModal();
+    };
+
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isEnquiryModalOpen, closeEnquiryModal]);
 
   useEffect(() => {
     if (!slides.length) return undefined;
@@ -77,7 +112,7 @@ function Home() {
     if (!data.fullname || data.fullname.trim().length < 3) return "Full name must be at least 3 characters";
     if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return "Enter a valid email";
     if (!data.phone || !/^[0-9]{10}$/.test(data.phone)) return "Enter a valid 10 digit phone number";
-    if (!data.subject || data.subject.trim().length < 5) return "Subject must be at least 5 characters";
+    if (!data.subject || data.subject.trim().length < 3) return "Please select a service";
     if (!data.message || data.message.trim().length < 10) return "Message must be at least 10 characters";
     return "";
   };
@@ -87,25 +122,33 @@ function Home() {
 
     const err = validate(formData);
     if (err) {
+      setIsError(true);
       setStatusMsg(err);
       return;
     }
 
     setSubmitting(true);
-    setStatusMsg("Sending...");
+    setIsError(false);
+    setStatusMsg("Sending your enquiry...");
 
     try {
-      const res = await axios.post(server_url + "/Enquiry/Esave", formData);
+      const res = await axios.post(server_url + "/Enquiry/Esave", {
+        ...formData,
+        source: "home",
+      });
 
       if (res?.data?.status === true) {
-        setStatusMsg("Enquiry sent successfully");
-        setFormData({ fullname: "", email: "", phone: "", subject: "", message: "" });
+        setIsError(false);
+        setStatusMsg("Thank you! Our team will contact you shortly.");
+        setFormData({ fullname: "", email: "", phone: "", subject: subjectOptions[0], message: "" });
       } else {
-        setStatusMsg(String(res?.data?.msg || "Server error"));
+        setIsError(true);
+        setStatusMsg(String(res?.data?.msg || "Unable to submit enquiry right now."));
       }
     } catch (err) {
       console.error(err);
-      setStatusMsg("Something went wrong.");
+      setIsError(true);
+      setStatusMsg("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -113,126 +156,152 @@ function Home() {
 
   return (
     <div className="page-bg">
+      <button
+        type="button"
+        className="home-enquiry-fab"
+        onClick={() => setIsEnquiryModalOpen(true)}
+        aria-label="Open enquiry form"
+      >
+        <span className="home-enquiry-fab-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+          </svg>
+        </span>
+        Enquire Now
+      </button>
+
       {isEnquiryModalOpen ? (
-        <div className="home-enquiry-modal-overlay" role="dialog" aria-modal="true" aria-label="Enquiry Form">
-          <div className="home-enquiry-modal">
+        <div
+          className="home-enquiry-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Enquiry form"
+          onClick={closeEnquiryModal}
+        >
+          <div className="home-enquiry-modal" onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
               className="home-enquiry-close"
               aria-label="Close enquiry form"
-              onClick={() => setIsEnquiryModalOpen(false)}
+              onClick={closeEnquiryModal}
             >
-              x
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
             </button>
 
-            <h2>Enquiry Form</h2>
-            <form onSubmit={handleSubmit} className="home-enquiry-form">
+            <div className="home-enquiry-head">
+              <p className="home-enquiry-kicker">Rudraksh Creation</p>
+              <h2>Quick Enquiry</h2>
+              <p className="home-enquiry-helper">
+                Share your requirements and our team will get back to you within one business day.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="home-enquiry-form" noValidate>
               <div className="home-enquiry-grid">
-                <input type="text" name="fullname" placeholder="Full Name" value={formData.fullname} onChange={handleChange} required />
-                <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+                <div className="home-enquiry-field">
+                  <label className="home-enquiry-label" htmlFor="homeEnquiryName">Full Name</label>
+                  <input
+                    id="homeEnquiryName"
+                    type="text"
+                    name="fullname"
+                    className="home-enquiry-control"
+                    placeholder="Enter your full name"
+                    value={formData.fullname}
+                    onChange={handleChange}
+                    required
+                    minLength={3}
+                    autoComplete="name"
+                  />
+                </div>
+                <div className="home-enquiry-field">
+                  <label className="home-enquiry-label" htmlFor="homeEnquiryEmail">Email Address</label>
+                  <input
+                    id="homeEnquiryEmail"
+                    type="email"
+                    name="email"
+                    className="home-enquiry-control"
+                    placeholder="you@example.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    autoComplete="email"
+                  />
+                </div>
               </div>
 
               <div className="home-enquiry-grid">
-                <input type="tel" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} required />
-                <input type="text" name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} required />
+                <div className="home-enquiry-field">
+                  <label className="home-enquiry-label" htmlFor="homeEnquiryPhone">Phone Number</label>
+                  <input
+                    id="homeEnquiryPhone"
+                    type="tel"
+                    name="phone"
+                    className="home-enquiry-control"
+                    placeholder="10-digit mobile number"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    inputMode="numeric"
+                    pattern="[0-9]{10}"
+                    minLength={10}
+                    maxLength={10}
+                    autoComplete="tel-national"
+                  />
+                </div>
+                <div className="home-enquiry-field">
+                  <label className="home-enquiry-label" htmlFor="homeEnquirySubject">Service Required</label>
+                  <select
+                    id="homeEnquirySubject"
+                    name="subject"
+                    className="home-enquiry-control"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                  >
+                    {subjectOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <textarea name="message" placeholder="Message" rows={5} value={formData.message} onChange={handleChange} required />
+              <div className="home-enquiry-field">
+                <label className="home-enquiry-label" htmlFor="homeEnquiryMessage">Project Details</label>
+                <textarea
+                  id="homeEnquiryMessage"
+                  name="message"
+                  className="home-enquiry-control"
+                  placeholder="Tell us about quantity, timeline, or any specific requirements..."
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  minLength={10}
+                />
+              </div>
 
-              <button type="submit" disabled={submitting}>{submitting ? "Sending..." : "Send"}</button>
-              <p className="home-enquiry-status">{statusMsg}</p>
+              <div className="home-enquiry-actions">
+                <button type="submit" className="home-enquiry-submit" disabled={submitting}>
+                  {submitting ? "Sending..." : "Submit Enquiry"}
+                </button>
+                <p
+                  className={`home-enquiry-status ${statusMsg ? "is-visible" : ""} ${isError ? "is-error" : statusMsg ? "is-success" : ""}`}
+                  role="status"
+                  aria-live="polite"
+                >
+                  {statusMsg}
+                </p>
+              </div>
             </form>
           </div>
         </div>
-      ) : (
-        <button type="button" className="open-enquiry-btn" onClick={() => setIsEnquiryModalOpen(true)}>
-          Open Enquiry Form
-        </button>
-      )}
+      ) : null}
 
-      <header className="site-header">
-        <div className="top-bar">
-          <div className="top-inner">
-            <div className="top-info">
-              <div className="top-item">
-                <span className="label">CALL US NOW</span>
-                <span className="value">09814573940 | 9517511636</span>
-              </div>
-              <div className="top-item">
-                <span className="label">EMAIL ADDRESS</span>
-                <span className="value">rcbti@hotmail.com</span>
-              </div>
-              <div className="top-item">
-                <span className="label">OFFICE ADDRESS</span>
-                <span className="value">Near Bank of Baroda, G.T. Road, Bathinda</span>
-              </div>
-            </div>
-            <a href="#" className="order-btn">Make An Order</a>
-          </div>
-        </div>
-
-        <div className="nav-bar">
-          <div className="nav-inner">
-            <a href="#" className="brand">
-              <img src={rc} alt="Rudraksh Creation" className="brand-logo" />
-            </a>
-
-            <button
-              type="button"
-              className="menu-toggle"
-              aria-label="Open menu"
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-
-            {isMobileMenuOpen ? (
-              <button
-                type="button"
-                className="menu-overlay"
-                aria-label="Close menu"
-                onClick={() => setIsMobileMenuOpen(false)}
-              />
-            ) : null}
-
-            <nav className={`nav-links ${isMobileMenuOpen ? "open" : ""}`}>
-              {navItems.map((item, idx) => (
-                <a
-                  key={item}
-                  href="#"
-                  className={idx === 0 ? "active" : ""}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item}
-                </a>
-              ))}
-
-              <div className="mobile-contact-menu">
-                <p><strong>CALL US NOW</strong><span>09814573940 | 9517511636</span></p>
-                <p><strong>EMAIL ADDRESS</strong><span>rcbti@hotmail.com</span></p>
-                <p><strong>OFFICE ADDRESS</strong><span>Near Bank of Baroda, G.T. Road, Bathinda</span></p>
-                <a href="#" className="mobile-order" onClick={() => setIsMobileMenuOpen(false)}>Make An Order</a>
-              </div>
-
-              <div className="mobile-socials">
-                <a href="#" className="social-btn fb" aria-label="Facebook">f</a>
-                <a href="#" className="social-btn ig" aria-label="Instagram">O</a>
-                <a href="#" className="social-btn yt" aria-label="YouTube">&gt;</a>
-              </div>
-            </nav>
-
-            <div className="nav-actions">
-              <div className="social-icons">
-                <a href="#" className="social-btn fb" aria-label="Facebook">f</a>
-                <a href="#" className="social-btn ig" aria-label="Instagram">O</a>
-                <a href="#" className="social-btn yt" aria-label="YouTube">&gt;</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteNav activePage="home" />
 
       <section className="hero-black carousel">
         {!slides.length ? (
@@ -354,6 +423,7 @@ function Home() {
       <Testimonials />
       <VideoSection />
       <Sponsors />
+      <SiteFooter />
     </div>
   );
 }

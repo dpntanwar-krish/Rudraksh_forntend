@@ -27,7 +27,7 @@ export default function Signup({ onSignupDone, onGoLogin }) {
     setLoading(true);
     try {
       const payload = { name: form.name, email: form.email, password: form.password };
-      const { data } = await axios.post(`${server_url}/admin/signup`, payload);
+      const { data } = await axios.post(`${server_url}/admin/signup`, payload, { withCredentials: true });
       if (!data?.success) throw new Error(data?.message || "Signup failed.");
       setSuccess("Signup successful. Redirecting to login...");
       setTimeout(() => onSignupDone?.(), 700);

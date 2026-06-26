@@ -1,0 +1,260 @@
+.yt-admin-page {
+  padding: 20px;
+  color: #f5f5f5;
+}
+
+.yt-admin-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.yt-admin-head h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.yt-admin-head p {
+  margin: 6px 0 0;
+  color: #bdbdbd;
+}
+
+.yt-admin-add-btn,
+.yt-admin-save {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: linear-gradient(90deg, #8d1f1f, #b72f2f);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.yt-admin-save.danger,
+.yt-admin-card-actions .danger {
+  background: #7f1d1d;
+  border: 1px solid #b31217;
+}
+
+.yt-admin-toast {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(74, 222, 128, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  color: #86efac;
+}
+
+.yt-admin-form {
+  background: linear-gradient(160deg, #171313, #120d0d);
+  border: 1px solid #3a0a0a;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 24px;
+  display: grid;
+  gap: 14px;
+}
+
+.yt-admin-form h3 {
+  margin: 0;
+}
+
+.yt-admin-form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.yt-admin-form input,
+.yt-admin-form select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #2e2222;
+  background: #1b1515;
+  color: #fff;
+  font: inherit;
+}
+
+.yt-admin-preview img {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 12px;
+  border: 1px solid #332525;
+}
+
+.yt-admin-preview p {
+  margin: 0 0 8px;
+  color: #bdbdbd;
+  font-size: 0.85rem;
+}
+
+.yt-admin-error {
+  margin: 0;
+  color: #fca5a5;
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.yt-admin-form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.yt-admin-cancel {
+  border: 1px solid #444;
+  background: transparent;
+  color: #ddd;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.yt-admin-list h3 {
+  margin: 0 0 16px;
+}
+
+.yt-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.yt-admin-card {
+  background: linear-gradient(150deg, #1a1515, #130f0f);
+  border: 1px solid #332525;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.yt-admin-card.dragging {
+  z-index: 1000;
+  opacity: 0.9;
+  border-color: #b31217;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+  transform: scale(1.03) rotate(1deg);
+  cursor: grabbing;
+}
+
+.yt-admin-card-seq {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-size: 0.76rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  z-index: 2;
+}
+
+.yt-seq-input {
+  width: 34px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 0.76rem;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.yt-seq-input:focus {
+  outline: none;
+}
+
+.yt-admin-saving {
+  margin: 0 0 14px;
+  color: #fbbf24;
+  font-size: 0.88rem;
+}
+
+.yt-admin-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.yt-admin-card-body {
+  padding: 12px;
+}
+
+.yt-admin-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #ffb4ab;
+  margin-bottom: 6px;
+}
+
+.yt-admin-card-body h4 {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+}
+
+.yt-admin-card-body p {
+  margin: 0 0 10px;
+  color: #aaa;
+  font-size: 0.8rem;
+}
+
+.yt-admin-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.yt-admin-card-actions button {
+  flex: 1;
+  border: 1px solid #7f1d1d;
+  background: #1a1010;
+  color: #ff8a80;
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.yt-admin-loading,
+.yt-admin-empty {
+  color: #bdbdbd;
+  margin-bottom: 16px;
+}
+
+.yt-admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.yt-admin-modal {
+  width: min(420px, 92vw);
+  background: #1a1a1a;
+  border: 1px solid #3a0a0a;
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.yt-admin-modal h3 {
+  margin: 0 0 10px;
+}
+
+.yt-admin-modal p {
+  color: #ccc;
+  margin: 0 0 18px;
+}

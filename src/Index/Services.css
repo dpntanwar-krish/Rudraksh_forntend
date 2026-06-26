@@ -1,0 +1,215 @@
+.services-3d-hero {
+  position: relative;
+  background: linear-gradient(180deg, #f6f4f2 0%, #fff 45%, #f8f6f4 100%);
+  padding: 80px 0 100px;
+  overflow: hidden;
+}
+
+.services-3d-shape {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shape-tri-left {
+  width: 0;
+  height: 0;
+  border-top: 70px solid transparent;
+  border-bottom: 70px solid transparent;
+  border-right: 120px solid rgba(179, 18, 23, 0.12);
+  top: 12%;
+  left: 4%;
+  transform: rotate(-8deg);
+}
+
+.shape-tri-right {
+  width: 0;
+  height: 0;
+  border-top: 90px solid transparent;
+  border-bottom: 90px solid transparent;
+  border-left: 140px solid rgba(243, 155, 29, 0.18);
+  top: 28%;
+  right: 3%;
+  transform: rotate(12deg);
+}
+
+.shape-dot-top {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(179, 18, 23, 0.14) 0%, transparent 70%);
+  top: 8%;
+  right: 18%;
+}
+
+.shape-dot-bottom {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(243, 155, 29, 0.16) 0%, transparent 72%);
+  bottom: 6%;
+  left: 10%;
+}
+
+.services-3d-inner {
+  width: min(1180px, 92%);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.services-3d-kicker {
+  font-family: "Sora", sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red, #b31217);
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.services-3d-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 70px;
+}
+
+.services-3d-row:last-child {
+  margin-bottom: 0;
+}
+
+.services-3d-row-reverse {
+  direction: rtl;
+}
+
+.services-3d-row-reverse > * {
+  direction: ltr;
+}
+
+.services-3d-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.services-3d-visual::before {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(179, 18, 23, 0.08), rgba(243, 155, 29, 0.1));
+  transform: rotate(-3deg);
+  z-index: 0;
+}
+
+.visual-analyst::before {
+  background: linear-gradient(135deg, rgba(179, 18, 23, 0.1), rgba(255, 255, 255, 0.4));
+}
+
+.visual-rocket::before {
+  background: linear-gradient(135deg, rgba(243, 155, 29, 0.14), rgba(179, 18, 23, 0.08));
+}
+
+.visual-phone::before {
+  background: linear-gradient(135deg, rgba(179, 18, 23, 0.08), rgba(243, 155, 29, 0.12));
+}
+
+.visual-desk::before {
+  background: linear-gradient(135deg, rgba(12, 12, 12, 0.06), rgba(179, 18, 23, 0.1));
+}
+
+.services-3d-media {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+  object-fit: cover;
+}
+
+.services-3d-media-phone {
+  max-width: 340px;
+  border-radius: 22px;
+}
+
+.services-3d-media-event {
+  max-width: 460px;
+  min-height: 280px;
+  object-fit: cover;
+}
+
+.services-3d-content h2 {
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  color: #191919;
+  margin: 0 0 18px;
+  line-height: 1.2;
+}
+
+.services-3d-content p {
+  color: #4a4f57;
+  line-height: 1.8;
+  margin: 0 0 14px;
+  font-size: 1.02rem;
+}
+
+.services-3d-content p:last-child {
+  margin-bottom: 0;
+}
+
+.services-3d-content .accent {
+  color: var(--red, #b31217);
+  font-weight: 700;
+}
+
+.services-3d-row-next {
+  margin-top: 10px;
+}
+
+.services-3d-row-event {
+  padding-top: 20px;
+}
+
+@media (max-width: 991px) {
+  .services-3d-row,
+  .services-3d-row-reverse {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 56px;
+  }
+
+  .services-3d-row-reverse {
+    direction: ltr;
+  }
+
+  .services-3d-visual {
+    min-height: auto;
+  }
+
+  .services-3d-media,
+  .services-3d-media-phone,
+  .services-3d-media-event {
+    max-width: 100%;
+  }
+
+  .shape-tri-left,
+  .shape-tri-right {
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 640px) {
+  .services-3d-hero {
+    padding: 60px 0 70px;
+  }
+
+  .services-3d-content h2 {
+    font-size: 1.45rem;
+  }
+}

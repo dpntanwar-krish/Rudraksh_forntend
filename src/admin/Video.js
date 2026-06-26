@@ -6,7 +6,15 @@ const videoSchema = new mongoose.Schema({
   },
   folder: {
     type: String,
-    default: "General",
+    default: null,
+  },
+  parentId: {
+    type: String,
+    default: null,
+  },
+  sequence: {
+    type: Number,
+    default: 0,
   },
   videoUrl: {
     type: String,

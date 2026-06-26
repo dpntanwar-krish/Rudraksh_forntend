@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { server_url } from "../url/url";
 import "./Login.css";
 
-export default function Login({ onLoginSuccess, onGoSignup }) {
+export default function Login({ onLoginSuccess, onGoSignup, initialMessage = "" }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (initialMessage) setError(initialMessage);
+  }, [initialMessage]);
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -18,7 +22,7 @@ export default function Login({ onLoginSuccess, onGoSignup }) {
     setError("");
     setLoading(true);
     try {
-      const { data } = await axios.post(`${server_url}/admin/login`, form);
+      const { data } = await axios.post(`${server_url}/admin/login`, form, { withCredentials: true });
       if (!data?.success) throw new Error(data?.message || "Login failed.");
       onLoginSuccess?.({ token: data.token, admin: data.admin });
     } catch (err) {
@@ -60,12 +64,14 @@ export default function Login({ onLoginSuccess, onGoSignup }) {
           {loading ? "Signing in..." : "Login"}
         </button>
 
-        <div className="auth-switch">
-          New admin?{" "}
-          <button type="button" onClick={onGoSignup} className="link-btn">
-            Create account
-          </button>
-        </div>
+        {onGoSignup ? (
+          <div className="auth-switch">
+            New admin?{" "}
+            <button type="button" onClick={onGoSignup} className="link-btn">
+              Create account
+            </button>
+          </div>
+        ) : null}
       </form>
     </div>
   );
