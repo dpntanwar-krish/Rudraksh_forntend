@@ -3,7 +3,6 @@ import "./Home.css";
 import SiteNav from "./SiteNav";
 import { useRevealOnScroll } from "./useRevealOnScroll";
 import Testimonials from "./Testimonials";
-import VideoSection from "./VideoSection";
 import Sponsors from "./Sponsors";
 import axios from "axios";
 import { server_url } from "../url/url";
@@ -421,7 +420,6 @@ function Home() {
       </section>
 
       <Testimonials />
-      <VideoSection />
       <Sponsors />
       <SiteFooter />
     </div>

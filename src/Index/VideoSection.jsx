@@ -2,9 +2,9 @@ import React from "react";
 
 export default function VideoSection() {
   return (
-    <section className="video-section reveal-on-scroll" aria-label="Design guideline video">
-      <div className="video-inner">
-        <div className="video-card">
+    <section className="video-section reveal-on-scroll py-12 px-4 sm:px-6 lg:px-8" aria-label="Design guideline video">
+      <div className="video-inner max-w-7xl mx-auto flex flex-col md:flex-row items-center md:items-start md:space-x-12 space-y-12 md:space-y-0">
+        <div className="video-card w-full md:w-1/2 relative rounded-lg overflow-hidden shadow-xl">
           <img src="/image/1.png" alt="Design workspace preview" />
           <button
             className="play-button"
@@ -16,12 +16,10 @@ export default function VideoSection() {
           </button>
         </div>
 
-        <div className="video-content">
-          <p className="video-eyebrow">Core Features</p>
-          <h2>Download A Design Guideline</h2>
+        <div className="video-content w-full md:w-1/2 text-center md:text-left">
 
-          <div className="video-panels">
-            <div className="video-panel highlight">
+          <div className="video-panels mt-8 flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <div className="video-panel highlight bg-white p-6 rounded-lg shadow-md w-full md:w-1/2">
               <h3>Grid Guideline</h3>
               <ul>
                 <li>Bleed: 2.91" × 1.26"</li>
@@ -30,7 +28,7 @@ export default function VideoSection() {
               </ul>
             </div>
 
-            <div className="video-panel tools is-animated">
+            <div className="video-panel tools is-animated bg-white p-6 rounded-lg shadow-md w-full md:w-1/2">
               <h3>Design Tools</h3>
               <ul>
                 <li>Adobe Photoshop</li>
@@ -40,8 +38,8 @@ export default function VideoSection() {
             </div>
           </div>
 
-          <div className="video-footer">
-            <div className="video-avatars">
+          <div className="video-footer mt-8 flex flex-col sm:flex-row items-center justify-center sm:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+            <div className="video-avatars flex -space-x-2 overflow-hidden">
               <img src="/image/men1.avif" alt="Reviewer RC" loading="lazy" />
               <img src="/image/men2.jpg" alt="Reviewer DM" loading="lazy" />
               <img src="/image/men3.avif" alt="Reviewer PR" loading="lazy" />
