@@ -191,8 +191,6 @@ function Home() {
             </button>
 
             <div className="home-enquiry-head">
-              <p className="home-enquiry-kicker">Rudraksh Creation</p>
-              <h2>Quick Enquiry</h2>
               <p className="home-enquiry-helper">
                 Share your requirements and our team will get back to you within one business day.
               </p>
