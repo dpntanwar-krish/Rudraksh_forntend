@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import { server_url } from "../url/url";
+// import { server_url } from "../url/url";
+const  server_url= require("dotenv");
+server_url.config();
 import "./Signup.css";
 
 export default function Signup({ onSignupDone, onGoLogin }) {

@@ -11,7 +11,9 @@ import PortfolioManager from "./PortfolioManager";
 import TeamManager from "./TeamManager";
 import AdminUserManager from "./AdminUserManager";
 import axios from "axios";
-import { server_url } from "../url/url";
+// import { server_url } from "../url/url";
+const  server_url= require("dotenv");
+server_url.config();
 
 const Admin = ({ onLogout, currentAdmin }) => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);

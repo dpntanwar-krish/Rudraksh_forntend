@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import "./File.css";
 import axios from "axios";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { server_url } from "../url/url";
+// import { server_url } from "../url/url";
+const  server_url= require("dotenv");
+server_url.config();
 
 function reorderList(list, startIndex, endIndex) {
   const result = [...list];

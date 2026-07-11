@@ -5,9 +5,10 @@ import { useRevealOnScroll } from "./useRevealOnScroll";
 import Testimonials from "./Testimonials";
 import Sponsors from "./Sponsors";
 import axios from "axios";
-import { server_url } from "../url/url";
+// import { server_url } from "../url/url";
 import SiteFooter from "./SiteFooter";
-
+const  server_url= require("dotenv");
+server_url.config();  
 function Home() {
   const [slides, setSlides] = useState([]);
   const [current, setCurrent] = useState(0);

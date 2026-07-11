@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./File.css";
 import axios from "axios";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
-import { server_url } from "../url/url";
+// import { server_url } from "../url/url";
+const  server_url= require("dotenv");
+server_url.config();
 import { extractVideoId, validateYoutubeUrl, getThumbnailUrl } from "../utils/youtubeUtils";
 
 function reorderList(list, startIndex, endIndex) {

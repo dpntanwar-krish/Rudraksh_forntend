@@ -17,7 +17,9 @@ import PortfolioFront from "./Index/nav/PortfolioFront.jsx";
 import axios from "axios";
 import Login from "./admin/Login.jsx";
 import Admin from "./admin/Admin.jsx";
-import { server_url } from "./url/url.js";
+// import { server_url } from ".";
+const  server_url= require("dotenv");
+server_url.config();
 
 const SESSION_MS = 30 * 60 * 1000;
 const ADMIN_TAB_AUTH_KEY = "rudraksh_admin_tab_auth";

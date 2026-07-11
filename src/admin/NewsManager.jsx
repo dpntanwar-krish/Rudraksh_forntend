@@ -2,7 +2,9 @@ import { useMemo, useState, useEffect } from "react";
 import axios from "axios";
 import NewsForm from "./NewsForm";
 import "./NewsManager.css";
-import { server_url } from "../url/url";
+// import { server_url } from "../url/url";
+const  server_url= require("dotenv");
+server_url.config();
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 
 function reorderList(list, startIndex, endIndex) {
